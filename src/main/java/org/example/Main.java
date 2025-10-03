@@ -9,7 +9,8 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) {
-        Server server = new Server();
+        HttpRequestParser httpRequestParser = new HttpRequestParser();
+        Server server = new Server(httpRequestParser);
         server.start();
     }
 }
