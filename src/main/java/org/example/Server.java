@@ -3,10 +3,7 @@ package org.example;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -27,6 +24,7 @@ public class Server {
             while (true) {
                 Socket client = serverSocket.accept();
                 InputStream in = client.getInputStream();
+                OutputStream out = client.getOutputStream();
                 System.out.println("클라이언트가 연결됨: " + client.getInetAddress().getHostName());
 
                 // input
@@ -67,6 +65,26 @@ public class Server {
 
                 System.out.println("requestLine: " + requestParts.toString());
                 System.out.println("Headers: " + headers);
+                PrintWriter writer = new PrintWriter(
+                        new OutputStreamWriter(out, StandardCharsets.UTF_8),
+                        true
+                );
+
+                // Status Line
+                writer.print("HTTP/1.1 200 OK\r\n");
+
+                // Headers
+                String body = "Hello From Server!";
+                byte[] bodyBytes = body.getBytes(StandardCharsets.UTF_8);
+                writer.print("Content-Type: text/html; charset=UTF-8\r\n");
+                writer.print("Content-Length: " + bodyBytes.length + "\r\n");
+                writer.print("Connection: close\r\n");
+                writer.print("\r\n");  // 빈 줄
+                writer.flush(); // Header 먼저 보내기
+
+                out.write(bodyBytes);
+                out.flush();
+
                 client.setSoTimeout(5000);
                 System.out.println("클라이언트 연결을 닫습니다");
                 client.close();
