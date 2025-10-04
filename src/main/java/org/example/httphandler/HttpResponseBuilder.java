@@ -1,4 +1,4 @@
-package org.example;
+package org.example.httphandler;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -6,9 +6,8 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 
-public class ResponseBuilder {
-
-    public void sendResponse(OutputStream out, int statusCode, String statusMessage, String body) throws IOException {
+public class HttpResponseBuilder {
+    public void makeResponsePacket(OutputStream out, int statusCode, String statusMessage, String body) throws IOException {
         PrintWriter writer = new PrintWriter(
                 new OutputStreamWriter(out, StandardCharsets.UTF_8),
                 true
@@ -30,19 +29,4 @@ public class ResponseBuilder {
         out.flush();
     }
 
-    public void sendOk(OutputStream out, String body) throws IOException {
-        sendResponse(out, 200, "OK", body);
-    }
-
-    public void sendNotFound(OutputStream out) throws IOException {
-        sendResponse(out, 404, "Not Found", "404 - Not Found");
-    }
-
-    public void sendBadRequest(OutputStream out) throws IOException {
-        sendResponse(out, 400, "Bad Request", "400 - Bad Request");
-    }
-
-    public void sendInternalServerError(OutputStream out) throws IOException {
-        sendResponse(out, 500, "Internal Server Error", "500 - Internal Server Error");
-    }
 }

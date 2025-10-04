@@ -1,15 +1,19 @@
 package org.example;
 
-import lombok.AllArgsConstructor;
+import org.example.httphandler.RequestHandler;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-@AllArgsConstructor
 public class Server {
-    private final RequestHandler requestHandler;
+    private static final Server INSTANCE = new Server();
+    private final RequestHandler requestHandler = RequestHandler.getInstance();;
+
+    public static Server getInstance() {
+        return INSTANCE;
+    }
 
     public void start() {
         int port = 8080;
