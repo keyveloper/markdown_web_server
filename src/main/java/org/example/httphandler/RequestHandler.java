@@ -35,6 +35,7 @@ public class RequestHandler {
             ServerHttpResponse serverHttpResponse = router.dispatch(parsedHttpRequest);
 
 
+
             client.setSoTimeout(5000);
             System.out.println("클라이언트 연결을 닫습니다");
         } catch (IOException e) {
